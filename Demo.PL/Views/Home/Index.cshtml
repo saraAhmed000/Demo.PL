@@ -1,0 +1,153 @@
+﻿@{
+    ViewData["Title"] = "History Category ";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<div class="container-fluid pt-5">
+    <div class="container">
+        <div class="text-center pb-2">
+            <p class="section-title px-5"><span class="px-2">Latest things </span></p>
+            <h1 class="mb-4">Latest Articles & Videos </h1>
+ 
+
+
+            <a id="followButton" class="btn btn-primary px-4 mx-auto my-2">
+                Follow
+                <i class="fas fa-arrow-right" id="followIcon" href=""></i> <!-- Font Awesome icon -->
+            </a>
+
+            <a  class="btn btn-primary px-4 mx-auto my-2">Post</a>
+
+
+        </div>
+        <div class="row pb-3">
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm mb-2">
+                    <img class="card-img-top mb-2 h-100 w-100" src="~/Files/Images/gold.jpg" alt="ramsis">
+                    <div class="card-body bg-light text-center p-4">
+                        <h4 class="">10 Facts about Ramsis||</h4>
+                         
+                        <p>Ramsis was a powerful ruler of ancient Egypt, known for his ambitious building projects, including the famous temple Karnak. He reigned during 19th</p>
+                        <a href="https://www.historyhit.com/articles/" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm mb-2">
+                    <img class="card-img-top mb-2 h-100 w-100" src="~/Files/Images/py2.jpg" alt="pyramid1">
+                    <div class="card-body bg-light text-center p-4">
+                        <h4 class="">7 Wonders of the Ancient </h4>
+                        <p>The Seven Wonders of the Ancient World are iconic architectural and artistic marvels, including the Great Pyramid of Giza.</p>
+                        <a href="https://www.historyhit.com/articles/" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm mb-2">
+                    <img class="card-img-top mb-2" src="~/Files/Images/alex.jpg" alt="alex">
+                    <div class="card-body bg-light text-center p-4 h-100 w-100">
+                        <h4 class="">Alexander the Great</h4>
+
+                        <p>Alexander the Great, a legendary conqueror, expanded his empire from Greece to India, leaving a lasting impact on history.</p>
+                        <a href="https://www.historyhit.com/articles/" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm mb-2">
+
+
+                    <video controls>
+                        <source src="~/Files/Images/ancient egyption.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <div class="card-body bg-light text-center p-4 h-100 w-100">
+                        <h4 class="">The Ancient Egyption </h4>
+
+                        <p>Ancient Egyptian civilization thrived along the Nile River, renowned for its monumental pyramids, intricate hieroglyphic writing..</p>
+                        <a href="https://www.historyhit.com/articles/" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm mb-2">
+
+
+                    <video controls>
+                        <source src="~/Files/Images/indiaaa.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <div class="card-body bg-light text-center p-4 h-100 w-100">
+                        <h4 class="">
+                            The Indian civilization
+
+                        </h4>
+
+                        <p>
+                            The Indian civilization, dating back millennia, boasts rich cultural diversity, profound spiritual traditions such as Hinduism and Buddhism.
+                        </p>
+                        <a href="https://www.historyhit.com/articles/" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm mb-2">
+
+
+                    <video controls>
+                        <source src="~/Files/Images/ISTANBUL.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <div class="card-body bg-light text-center p-4 h-100 w-100">
+                        <h4 class="">
+                            ISTANBUL History 
+
+                        </h4>
+
+                        <p>
+
+                            Istanbul, with a storied past spanning centuries, was once Byzantium and Constantinople. It served as the capital of the Roman, Byzantine
+                        </p>
+                        <a href="https://www.historyhit.com/articles/" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+
+
+           
+        </div>
+    </div>
+</div>
+<style>
+    #followIcon {
+        display: none; /* Hide the icon initially */
+    }
+
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var followButton = document.getElementById('followButton');
+        var followIcon = document.getElementById('followIcon');
+
+        followButton.addEventListener('click', function () {
+            if (followIcon.style.display === 'none') {
+                followIcon.style.display = 'inline'; // Show the icon if it's currently hidden
+            } else {
+                followIcon.style.display = 'none'; // Hide the icon if it's currently visible
+            }
+        });
+    });
+</script>

@@ -1,0 +1,158 @@
+﻿@{
+    ViewData["Title"] = "Languages Category";
+}
+<h1>@ViewData["Title"]</h1>
+<div class="container-fluid pt-5">
+    <div class="container">
+        <div class="text-center pb-2">
+            <p class="section-title px-5"><span class="px-2">Latest things </span></p>
+            <h1 class="mb-4">Latest Articles & Videos </h1>
+           
+            
+            <a id="followButton" class="btn btn-primary px-4 mx-auto my-2">
+                Follow
+                <i class="fas fa-arrow-right" id="followIcon" href=""></i> 
+            </a>
+
+            <a class="btn btn-primary px-4 mx-auto my-2">Post</a>
+
+
+        </div>
+        <div class="row pb-3">
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm mb-2">
+                    <img class="card-img-top mb-2 h-100 w-100" src="~/Files/Images/english-2724442_1280.jpg" alt="ramsis">
+                    <div class="card-body bg-light text-center p-4">
+                        <h4 class="">Learn English</h4>
+
+                        <p>English, a global language, serves as a bridge across cultures and professions. Its versatility, widespread usage, and rich vocabulary .</p>
+                        <a href="https://www.duolingo.com/" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm mb-2">
+                    <img class="card-img-top mb-2 h-100 w-100" src="~/Files/Images/almani.jpg" alt="pyramid1">
+                    <div class="card-body bg-light text-center p-4">
+                        <h4 class="">Learn Duetsh  </h4>
+                        <p>
+                            German, a widely spoken language in Europe, boasts a rich cultural heritage it influences literature, science, and engineering worldwide
+                        </p>
+                        <a href="https://www.duolingo.com/" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm mb-2">
+                    <img class="card-img-top mb-2" src="~/Files/Images/Italy.jpg" alt="alex">
+                    <div class="card-body bg-light text-center p-4 h-100 w-100">
+                        <h4 class="">Learn Italian </h4>
+
+ 
+                        <p>
+                            Italian, a Romance language, is renowned for its musicality and elegance. It has a rich cultural heritage and is celebrated globally
+                        </p>
+                        <a href="https://www.duolingo.com/" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm mb-2">
+
+
+                    <video controls>
+                        <source src="~/Files/Images/visdo1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <div class="card-body bg-light text-center p-4 h-100 w-100">
+                        <h4 class="">Turkish Language  </h4>
+
+
+                        <p>
+                            Turkish, with its unique grammar and phonetics, is spoken in Turkey and parts of Europe and Asia. It reflects a rich cultural history
+                        </p>
+                        <a href="https://www.duolingo.com/" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm mb-2">
+
+
+                    <video controls>
+                        <source src="~/Files/Images/video33.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <div class="card-body bg-light text-center p-4 h-100 w-100">
+                        <h4 class="">
+                           Frensh Language 
+
+                        </h4>
+
+                        <p>
+
+
+                            French, a Romance language, is known for its beauty and elegance. It's spoken widely around the world and has a rich literary tradition
+                        </p>
+                        <a href="https://www.duolingo.com/" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm mb-2">
+
+
+                    <video controls>
+                        <source src="~/Files/Images/video2.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <div class="card-body bg-light text-center p-4 h-100 w-100">
+                        <h4 class="">
+                            Hebrew language
+                        </h4>
+
+                        <p>
+                            Hebrew, an ancient Semitic language, revived in modern Israel, holds religious and cultural significance and is written from right to left
+ 
+                        </p>
+                        <a href="https://www.historyhit.com/articles/" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+<style>
+    #followIcon {
+        display: none; /* Hide the icon initially */
+    }
+
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var followButton = document.getElementById('followButton');
+        var followIcon = document.getElementById('followIcon');
+
+        followButton.addEventListener('click', function () {
+            if (followIcon.style.display === 'none') {
+                followIcon.style.display = 'inline'; // Show the icon if it's currently hidden
+            } else {
+                followIcon.style.display = 'none'; // Hide the icon if it's currently visible
+            }
+        });
+    });
+</script>
