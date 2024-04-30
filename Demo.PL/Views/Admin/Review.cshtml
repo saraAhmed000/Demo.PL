@@ -1,0 +1,22 @@
+﻿@model List<Content>
+
+@foreach (var content in Model)
+{
+    <div>
+        <h4>@content.Title</h4>
+        <p>@content.Description</p>
+        <p>Content Type: @content.ContentType</p>
+
+        @using (Html.BeginForm("Approve", "Content", new { id = content.Id }, FormMethod.Post))
+        {
+            <input type="submit" value="ApproveContent" />
+        }
+
+        @using (Html.BeginForm("Reject", "Content", new { id = content.Id }, FormMethod.Post))
+        {
+            <input type="submit" value="RejectContent" />
+        }
+
+        <hr />
+    </div>
+}

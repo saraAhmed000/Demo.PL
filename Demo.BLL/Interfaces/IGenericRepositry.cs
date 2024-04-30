@@ -10,7 +10,7 @@ namespace Demo.BLL.Interfaces
     public interface IGenericRepositry<T>where T : class
     {
 
-     Task< IEnumerable<T>> getAll();
+     Task<List<T>> getAll();
       Task < T> get(int id);
 
         Task Add(T item);

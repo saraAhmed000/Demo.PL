@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Demo.BLL.Interfaces
 {
-    public interface IUnitOfWork:IDisposable
+    public interface IUnitOfWork<T> : IDisposable where T : class
     {
         public IEmployeeRepositry EmployeeRepositry{ get; set; }
         public IDepartmentRepositry DepartmentRepositry { get; set; }
-
+        public IGenericRepositry<T> GenericRepositry { get; set; }
        Task <int> Complete();
     }
 }

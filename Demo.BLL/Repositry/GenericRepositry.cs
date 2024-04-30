@@ -40,10 +40,11 @@ namespace Demo.BLL.Repositry
         => await _dbContext.Set<T>().FindAsync(id);
            
         //refactor Code TO DEsgin Pattern Called [Specification]
-        public async Task  <IEnumerable<T>> getAll()
+        // NOTE : I refactor this part
+        public async Task  <List<T>> getAll()
         {
             if (typeof(T) == typeof(Employee))
-            return  (IEnumerable<T>)await _dbContext.Employees.Include(E => E.Department).ToListAsync(); 
+            return  await _dbContext.Set<T>().ToListAsync(); 
             else 
                 return await _dbContext.Set<T>().ToListAsync();
         }

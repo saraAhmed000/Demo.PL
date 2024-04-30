@@ -16,9 +16,9 @@ namespace Demo.PL.Controllers
         private readonly IMapper _mapper;
 
         //private readonly IDepartmentRepositry _departmentRepositry;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork<Department> _unitOfWork;
 
-        public DepartmentController(/*IDepartmentRepositry departmentRepositry*/ IMapper mapper, IUnitOfWork unitOfWork)
+        public DepartmentController(/*IDepartmentRepositry departmentRepositry*/ IMapper mapper, IUnitOfWork<Department> unitOfWork)
         {
             _mapper = mapper;
             //_departmentRepositry = departmentRepositry;
