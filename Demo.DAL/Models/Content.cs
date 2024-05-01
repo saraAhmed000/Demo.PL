@@ -12,9 +12,15 @@ namespace Demo.DAL.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string ContentType { get; set; }
+        
         //public HttpPostedFileBase File { get; set; }
+        
         public bool IsApproved { get; set; }
+
         public string FileName { get; set; }
+
         public string FilePath { get; set; }
+
+        public string ContentText { get; set; }
     }
 }

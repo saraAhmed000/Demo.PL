@@ -1,4 +1,4 @@
-﻿
+﻿@*
 @{
     ViewData["Title"] = "UploadContent";
 }
@@ -25,3 +25,106 @@
 }
 
 
+*@
+
+
+
+@{
+    ViewData["Title"] = "UploadContent";
+}
+
+<h1>Upload Content</h1>
+
+@using (Html.BeginForm("Upload", "Content", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <label for="type">Content Type:</label>
+    <select name="type" id="type">
+        <option value="article">Article</option>
+        <option value="video">Video</option>
+        <option value="voice">Voice Note</option>
+    </select>
+
+    <br />
+
+    <label for="file">File:</label>
+    <input type="file" name="file" />
+
+    <br />
+
+    <label for="articleContent">Article Content:</label>
+    <textarea name="articleContent" id="articleContent" rows="8" cols="40"></textarea>
+
+    <br />
+   <input type="hidden" name="voiceNote" id="voiceNote" />
+
+     
+    <button type="button" id="startRecording">Start Recording</button>
+    <button type="button" id="stopRecording">Stop Recording</button>
+
+    <br />
+
+    <input type="submit" value="Upload" />
+}
+
+<script>
+    
+    let mediaRecorder;
+    const voiceNoteInput = document.getElementById('voiceNote');
+    const startRecordingButton = document.getElementById('startRecording');
+    const stopRecordingButton = document.getElementById('stopRecording');
+    let chunks = [];
+
+    startRecordingButton.addEventListener('click', async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.ondataavailable = (event) => {
+            chunks.push(event.data);
+        };
+
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(chunks, { type: 'audio/webm' });
+            const audioUrl = URL.createObjectURL(blob);
+            voiceNoteInput.value = audioUrl;
+        };
+
+        mediaRecorder.start();
+    });
+
+    stopRecordingButton.addEventListener('click', () => {
+        mediaRecorder.stop();
+         
+        const blob = dataURItoBlob(voiceNoteInput.value);
+         
+        const file = new File([blob], 'voice_note.webm', { type: 'audio/webm' });
+        
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('type', 'voice');
+        
+        fetch('/Content/Upload', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Voice note uploaded successfully!');
+                } else {
+                    console.error('Error uploading voice note:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error uploading voice note:', error);
+            });
+    });
+ function dataURItoBlob(dataURI) {
+        const byteString = atob(dataURI.split(',')[1]);
+        const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], { type: mimeString });
+    }
+</script>

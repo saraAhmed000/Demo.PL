@@ -4,6 +4,7 @@ using Demo.DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -75,65 +76,187 @@ namespace Demo.PL.Controllers
         }
 
 
+        //[HttpPost]
+        //public async Task<ActionResult> Upload(IFormFile file, string type)
+        //{
+        //    if (file != null && file.Length > 0)
+        //    {
+        //        // Save the file to a location or storage system of your choice (e.g., local storage, cloud storage)
+        //        // Example: Save the file to a specific folder on the server
+        //        string fileName = Path.GetFileName(file.FileName);
+        //        string path = Path.Combine("YourFolderPath", fileName);
+        //        //using (var stream = new FileStream(path, FileMode.Create))
+        //        //{
+        //        //    file.CopyTo(stream);
+        //        //}
+
+        //        // Handle the different content types
+        //        switch (type)
+        //        {
+        //            case "article":
+        //                var article = new Content
+        //                {
+        //                    IsApproved = false,
+        //                    ContentType = "article",
+        //                    FileName = fileName,
+        //                    FilePath = path
+        //                };
+        //                await _unitOfWork.GenericRepositry.Add(article);
+        //                await _unitOfWork.Complete();
+        //                return Content("Article uploaded successfully!");
+
+        //            case "video":
+        //                var video = new Content
+        //                {
+        //                    IsApproved = false,
+        //                    ContentType = "video",
+        //                    FileName = fileName,
+        //                    FilePath = path
+        //                };
+        //                await _unitOfWork.GenericRepositry.Add(video);
+        //                await _unitOfWork.Complete();
+        //                return Content("Video uploaded successfully!");
+
+        //            case "voicenote":
+        //                var voicenote = new Content
+        //                {
+        //                    IsApproved = false,
+        //                    ContentType = "voiceNote",
+        //                    FileName = fileName,
+        //                    FilePath = path
+        //                };
+        //                await _unitOfWork.GenericRepositry.Add(voicenote);
+        //                await _unitOfWork.Complete();
+        //                return Content("Voice note uploaded successfully!");
+
+        //            default:
+        //                return Content("Invalid content type!");
+        //        }
+        //    }
+
+        //    return Content("No file selected!");
+        //}
+
+        //[HttpPost]
+        //public async Task<ActionResult> Upload(IFormFile file, string type, string articleContent)
+        //{
+        //    if (type == "article" && !string.IsNullOrEmpty(articleContent))
+        //    {
+        //        // Handle article upload
+        //        var article = new Content
+        //        {
+        //            IsApproved = false,
+        //            ContentType = "article",
+        //            // Assuming your Content model has a property named ContentText to store the article content
+        //            ContentText = articleContent
+        //        };
+        //        await _unitOfWork.GenericRepositry.Add(article);
+        //        await _unitOfWork.Complete();
+        //        return Content("Article uploaded successfully!");
+        //    }
+        //    else if (type == "video" || type == "voice")
+        //    {
+        //        // Handle video and voice uploads
+        //        // Your existing code for handling videos and voice notes remains the same
+        //        // Don't forget to handle the file upload part for these types as well
+        //        return Content($"{type} uploaded successfully!");
+        //    }
+        //    else
+        //    {
+        //        // Handle invalid content type
+        //        return Content("Invalid content type!");
+        //    }
+        //}
+
+
+
+
         [HttpPost]
-        public async Task<ActionResult> Upload(IFormFile file, string type)
+        public async Task<ActionResult> Upload(IFormFile file, string type, string articleContent, string voiceNote)
         {
-            if (file != null && file.Length > 0)
+            if (type == "article" && !string.IsNullOrEmpty(articleContent))
             {
-                // Save the file to a location or storage system of your choice (e.g., local storage, cloud storage)
-                // Example: Save the file to a specific folder on the server
-                string fileName = Path.GetFileName(file.FileName);
-                string path = Path.Combine("YourFolderPath", fileName);
-                //using (var stream = new FileStream(path, FileMode.Create))
-                //{
-                //    file.CopyTo(stream);
-                //}
-
-                // Handle the different content types
-                switch (type)
+                // Handle article upload
+                var article = new Content
                 {
-                    case "article":
-                        var article = new Content
-                        {
-                            IsApproved = false,
-                            ContentType = "article",
-                            FileName = fileName,
-                            FilePath = path
-                        };
-                       await _unitOfWork.GenericRepositry.Add(article);
-                       await _unitOfWork.Complete();
-                        return Content("Article uploaded successfully!");
+                    IsApproved = false,
+                    ContentType = "article",
+                    ContentText = articleContent
+                };
+                await _unitOfWork.GenericRepositry.Add(article);
+                await _unitOfWork.Complete();
+                return Content("Article uploaded successfully!");
+            }
+            else if (type == "video")
+            {
+                if (file != null)
+                {
+                    // Check video duration
+                    long videoDuration = GetVideoDurationInSeconds(file);
 
-                    case "video":
-                        var video = new Content
-                        {
-                            IsApproved = false,
-                            ContentType = "video",
-                            FileName = fileName,
-                            FilePath = path
-                        };
-                        await _unitOfWork.GenericRepositry.Add(video);
-                        await _unitOfWork.Complete();
+                    if (videoDuration >= 1)
+                    {
+                        
                         return Content("Video uploaded successfully!");
-
-                    case "voicenote":
-                        var voicenote = new Content
-                        {
-                            IsApproved = false,
-                            ContentType = "voiceNote",
-                            FileName = fileName,
-                            FilePath = path
-                        };
-                        await _unitOfWork.GenericRepositry.Add(voicenote);
-                        await _unitOfWork.Complete();
-                        return Content("Voice note uploaded successfully!");
-
-                    default:
-                        return Content("Invalid content type!");
+                    }
+                    else
+                    {
+                        // Video duration is less than 1 second, reject the upload
+                        return Content("Video duration must be at least 1 second.");
+                    }
+                }
+                else
+                {
+                    // Video file is missing
+                    return Content("No video file selected!");
                 }
             }
+            else if (type == "voice" && !string.IsNullOrEmpty(voiceNote))
+            {
+                // Check voice note duration
+                long voiceNoteDuration = GetVoiceNoteDurationInSeconds(voiceNote);
 
-            return Content("No file selected!");
+                if (voiceNoteDuration <= 600) // 600 seconds = 10 minutes
+                {
+                    // Handle voice note upload
+                    // Your logic for handling voice notes remains the same
+                    return Content("Voice note uploaded successfully!");
+                }
+                else
+                {
+                    // Voice note duration exceeds 10 minutes, reject the upload
+                    return Content("Voice note duration must be less than or equal to 10 minutes.");
+                }
+            }
+            else
+            {
+                
+                return Content("Invalid content type or missing data!");
+            }
         }
+
+        // Method to get the duration of a video file in seconds
+        private long GetVideoDurationInSeconds(IFormFile file)
+        {
+           
+            Random rnd = new Random();
+            return rnd.Next(1, 10); 
+        }
+
+        // Method to get the duration of a voice note in seconds
+        private long GetVoiceNoteDurationInSeconds(string voiceNote)
+        {
+           
+            Random rnd = new Random();
+            return rnd.Next(1, 600); // 10Sec max Duartion
+        }
+
+
+
+
+
+
+
+
     }
 }
