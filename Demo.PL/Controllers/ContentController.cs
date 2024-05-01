@@ -1,9 +1,13 @@
 ﻿using Demo.BLL.Interfaces;
 using Demo.BLL.Repositry;
 using Demo.DAL.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Demo.PL.Controllers
 {
@@ -29,7 +33,7 @@ namespace Demo.PL.Controllers
             if (contentToApprove != null)
                 {
                     contentToApprove.IsApproved = true;
-                    _unitOfWork.Complete();
+                    await _unitOfWork.Complete();
                 }
 
                 // Redirect to the review page or any other appropriate page
@@ -44,7 +48,7 @@ namespace Demo.PL.Controllers
                 if (contentToReject != null)
                 {
                    _unitOfWork.GenericRepositry.Delete(contentToReject);
-                   _unitOfWork.Complete();
+                   await _unitOfWork.Complete();
                 }
 
                 // Redirect to the review page or any other appropriate page
@@ -64,6 +68,72 @@ namespace Demo.PL.Controllers
                  }
                  return pendingData;
             }
-        
+        [HttpPost]
+        public ActionResult UploadContent()
+        {
+            return View("UploadContent");
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> Upload(IFormFile file, string type)
+        {
+            if (file != null && file.Length > 0)
+            {
+                // Save the file to a location or storage system of your choice (e.g., local storage, cloud storage)
+                // Example: Save the file to a specific folder on the server
+                string fileName = Path.GetFileName(file.FileName);
+                string path = Path.Combine("YourFolderPath", fileName);
+                //using (var stream = new FileStream(path, FileMode.Create))
+                //{
+                //    file.CopyTo(stream);
+                //}
+
+                // Handle the different content types
+                switch (type)
+                {
+                    case "article":
+                        var article = new Content
+                        {
+                            IsApproved = false,
+                            ContentType = "article",
+                            FileName = fileName,
+                            FilePath = path
+                        };
+                       await _unitOfWork.GenericRepositry.Add(article);
+                       await _unitOfWork.Complete();
+                        return Content("Article uploaded successfully!");
+
+                    case "video":
+                        var video = new Content
+                        {
+                            IsApproved = false,
+                            ContentType = "video",
+                            FileName = fileName,
+                            FilePath = path
+                        };
+                        await _unitOfWork.GenericRepositry.Add(video);
+                        await _unitOfWork.Complete();
+                        return Content("Video uploaded successfully!");
+
+                    case "voicenote":
+                        var voicenote = new Content
+                        {
+                            IsApproved = false,
+                            ContentType = "voiceNote",
+                            FileName = fileName,
+                            FilePath = path
+                        };
+                        await _unitOfWork.GenericRepositry.Add(voicenote);
+                        await _unitOfWork.Complete();
+                        return Content("Voice note uploaded successfully!");
+
+                    default:
+                        return Content("Invalid content type!");
+                }
+            }
+
+            return Content("No file selected!");
+        }
     }
 }

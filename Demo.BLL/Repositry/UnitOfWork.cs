@@ -14,7 +14,7 @@ namespace Demo.BLL.Repositry
 
         public IEmployeeRepositry EmployeeRepositry { get ; set ; }
         public IDepartmentRepositry DepartmentRepositry { get; set; }
-        public IGenericRepositry<T> GenericRepositry { get ; set; }
+        
 
         public UnitOfWork(MVCAppG0XDbContext dbContext)
         {
@@ -23,7 +23,7 @@ namespace Demo.BLL.Repositry
             GenericRepositry = new GenericRepositry<T>(dbContext);
             _dbContext = dbContext;
         }
-
+        public IGenericRepositry<T> GenericRepositry { get; set; }
         public Task <int> Complete()
         =>_dbContext.SaveChangesAsync();
 

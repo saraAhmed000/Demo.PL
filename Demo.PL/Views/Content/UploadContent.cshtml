@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "UploadContent";
+}
+
+<h1>Upload Content</h1>
+
+@using (Html.BeginForm("Upload", "Content", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <label for="type">Content Type:</label>
+    <select name="type" id="type">
+        <option value="article">Article</option>
+        <option value="video">Video</option>
+        <option value="voice">Voice Note</option>
+    </select>
+
+    <br />
+
+    <label for="file">File:</label>
+    <input type="file" name="file" />
+
+    <br />
+
+    <input type="submit" value="Upload" />
+}
+
+

@@ -37,6 +37,8 @@ namespace Demo.PL
 
             //builder.Services.AddScoped<IDepartmentRepositry, DepartmentRepositry>();
             //builder.Services.AddScoped<IEmployeeRepositry, EmployeeRepositry>();
+           // builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
             //builder.Services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
             //builder.Services.AddAutoMapper(M => M.AddProfile(new DepartmentProfile()));
 
