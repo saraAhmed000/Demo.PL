@@ -73,7 +73,16 @@ namespace Demo.PL.Controllers
                     {
                         await _signInManager.PasswordSignInAsync(user, model.Password, model.RemmberMe, false);
 
-                        return RedirectToAction("Index", "Home");
+                        var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                        if (isAdmin)
+                        {
+                            return RedirectToAction("AdminHome", "Admin");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+
                     }
 
                     ModelState.AddModelError(string.Empty, "Invalid Password");

@@ -21,7 +21,7 @@ namespace Demo.PL
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +62,19 @@ namespace Demo.PL
                 .AddEntityFrameworkStores<MVCAppG0XDbContext>()
 
             .AddDefaultTokenProviders();
+
+            var serviceProvider = builder.Services.BuildServiceProvider();
+
+            // Create admin role
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var adminRoleExists = await roleManager.RoleExistsAsync("Admin");
+                if (!adminRoleExists)
+                {
+                   await  roleManager.CreateAsync(new IdentityRole("Admin"));
+                }
+            }
 
 
 
