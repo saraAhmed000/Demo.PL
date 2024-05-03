@@ -33,38 +33,84 @@
     ViewData["Title"] = "UploadContent";
 }
 
-<h1>Upload Content</h1>
-
-@using (Html.BeginForm("Upload", "Content", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <label for="type">Content Type:</label>
-    <select name="type" id="type">
-        <option value="article">Article</option>
-        <option value="video">Video</option>
-        <option value="voice">Voice Note</option>
-    </select>
-
-    <br />
-
-    <label for="file">File:</label>
-    <input type="file" name="file" />
-
-    <br />
-
-    <label for="articleContent">Article Content:</label>
-    <textarea name="articleContent" id="articleContent" rows="8" cols="40"></textarea>
-
-    <br />
-   <input type="hidden" name="voiceNote" id="voiceNote" />
-
+<style>
      
-    <button type="button" id="startRecording">Start Recording</button>
-    <button type="button" id="stopRecording">Stop Recording</button>
+    .record-button {
+        padding: 10px 20px;
+        background-color: #4CAF50;  
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
 
-    <br />
+  
+    .start-button {
+        background-color: #4CAF50;  
+    }
+ 
+    .stop-button {
+        background-color: #4CAF50;  
+    }
 
-    <input type="submit" value="Upload" />
-}
+    .custom-label {
+        font-size: 18px;
+        color: #333;  
+    }
+     
+    .custom-select {
+        font-size: 18px;
+        padding: 4px;
+        border-radius: 3px;
+        border: 1px solid #ccc;  
+        width:50%;
+        text-align:center;
+    }
+</style>
+
+
+<div style="text-align: center; margin-top: 50px;">
+    <h2 style=" font-size: 40px ; padding-bottom:10px;">Uploads </h2>
+
+    <form method="post" action="/Content/Upload" enctype="multipart/form-data">
+
+        <label for="type" style="font-size:18px" class="custom-select">Content Type:</label>
+
+        <select name="type" id="type" style="font-size:18px" class="custom-select">
+            <option value="article">Article</option>
+            <option value="video">Video</option>
+            <option value="voice">Voice Note</option>
+        </select>
+
+        <br /><br />
+
+        <label for="file">File:</label>
+        <input type="file" name="file" />
+
+        <br /><br />
+
+        <label for="articleContent" style="font-size:16px">You can write your articale content:</label><br />
+        <textarea name="articleContent" id="articleContent" rows="8" cols="40"></textarea>
+
+        <br /><br />
+
+        <input type="hidden" name="voiceNote" id="voiceNote" />
+
+        <button type="button" id="startRecording" class="record-button start-button" >Start Recording</button>
+        <button type="button" id="stopRecording" class="record-button stop-button">Stop Recording</button>
+
+        <br /><br />
+
+        <input type="submit" value="Upload" style="padding: 10px 20px; background-color: #28a745; color: #fff; border: none; cursor: pointer; font-size: 16px; border-radius: 5px;">
+    </form>
+</div>
+
+
 
 <script>
     

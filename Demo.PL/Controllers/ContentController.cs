@@ -13,8 +13,8 @@ using System.Web;
 namespace Demo.PL.Controllers
 {
     public class ContentController : Controller
-    {
-        private readonly IUnitOfWork<Content> _unitOfWork;
+
+    {   private readonly IUnitOfWork<Content> _unitOfWork;
         public ContentController(IUnitOfWork<Content> unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -22,53 +22,53 @@ namespace Demo.PL.Controllers
 
         public ActionResult ReviewToAdmin()
         {
-                var contentToReview = GetPendingContent();
+            var contentToReview = GetPendingContent();
 
-                return View(contentToReview);
+            return View(contentToReview);
         }
 
-            [HttpPost]
-            public async Task<ActionResult> ApproveContent(int id)
-            {
-                var contentToApprove = await _unitOfWork.GenericRepositry.get(id);
+        [HttpPost]
+        public async Task<ActionResult> ApproveContent(int id)
+        {
+            var contentToApprove = await _unitOfWork.GenericRepositry.get(id);
             if (contentToApprove != null)
-                {
-                    contentToApprove.IsApproved = true;
-                    await _unitOfWork.Complete();
-                }
-
-                // Redirect to the review page or any other appropriate page
-                return RedirectToAction("Review");
+            {
+                contentToApprove.IsApproved = true;
+                await _unitOfWork.Complete();
             }
 
-            [HttpPost]
-            public async Task<ActionResult> RejectContent(int id)
-            {
+            // Redirect to the review page or any other appropriate page
+            return RedirectToAction("Review");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> RejectContent(int id)
+        {
             // Retrieve the content by its ID and mark it as rejected or delete it
             var contentToReject = await _unitOfWork.GenericRepositry.get(id);
-                if (contentToReject != null)
-                {
-                   _unitOfWork.GenericRepositry.Delete(contentToReject);
-                   await _unitOfWork.Complete();
-                }
-
-                // Redirect to the review page or any other appropriate page
-                return RedirectToAction("Review");
-            }
-
-            private async Task<List<Content>> GetPendingContent()
+            if (contentToReject != null)
             {
-                 var pendingData = new List<Content>();
-                 var pendingContent = await _unitOfWork.GenericRepositry.getAll();
-                 foreach (var content in pendingContent)
-                 {
-                   if(content.IsApproved == false)
-                   {
-                    pendingData.Add(content);
-                   }
-                 }
-                 return pendingData;
+                _unitOfWork.GenericRepositry.Delete(contentToReject);
+                await _unitOfWork.Complete();
             }
+
+            // Redirect to the review page or any other appropriate page
+            return RedirectToAction("Review");
+        }
+
+        private async Task<List<Content>> GetPendingContent()
+        {
+            var pendingData = new List<Content>();
+            var pendingContent = await _unitOfWork.GenericRepositry.getAll();
+            foreach (var content in pendingContent)
+            {
+                if (content.IsApproved == false)
+                {
+                    pendingData.Add(content);
+                }
+            }
+            return pendingData;
+        }
         [HttpPost]
         public ActionResult UploadContent()
         {
@@ -168,9 +168,6 @@ namespace Demo.PL.Controllers
         //    }
         //}
 
-
-
-
         [HttpPost]
         public async Task<ActionResult> Upload(IFormFile file, string type, string articleContent, string voiceNote)
         {
@@ -195,13 +192,12 @@ namespace Demo.PL.Controllers
                     long videoDuration = GetVideoDurationInSeconds(file);
 
                     if (videoDuration >= 1)
-                    {
-                        
+                    { 
                         return Content("Video uploaded successfully!");
                     }
                     else
                     {
-                        // Video duration is less than 1 second, reject the upload
+                       
                         return Content("Video duration must be at least 1 second.");
                     }
                 }
@@ -213,24 +209,31 @@ namespace Demo.PL.Controllers
             }
             else if (type == "voice" && !string.IsNullOrEmpty(voiceNote))
             {
-                // Check voice note duration
+                
                 long voiceNoteDuration = GetVoiceNoteDurationInSeconds(voiceNote);
 
                 if (voiceNoteDuration <= 600) // 600 seconds = 10 minutes
                 {
-                    // Handle voice note upload
-                    // Your logic for handling voice notes remains the same
+                    
                     return Content("Voice note uploaded successfully!");
                 }
                 else
                 {
-                    // Voice note duration exceeds 10 minutes, reject the upload
+                     
                     return Content("Voice note duration must be less than or equal to 10 minutes.");
                 }
             }
+            else if (file != null && (file.ContentType == "application/pdf" ||
+                                      file.ContentType == "application/msword" ||
+                                      file.ContentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
+            {
+                // Handle word file or PDF upload
+                // You can add logic here to save the file and any additional details if needed
+                return Content("Document uploaded successfully!");
+            }
             else
             {
-                
+                // Handle invalid content type or missing data
                 return Content("Invalid content type or missing data!");
             }
         }
@@ -238,23 +241,14 @@ namespace Demo.PL.Controllers
         // Method to get the duration of a video file in seconds
         private long GetVideoDurationInSeconds(IFormFile file)
         {
-           
-            Random rnd = new Random();
-            return rnd.Next(1, 10); 
+              Random rnd = new Random();
+            return rnd.Next(1, 10); // duration =10sec
         }
-
-        // Method to get the duration of a voice note in seconds
-        private long GetVoiceNoteDurationInSeconds(string voiceNote)
+         private long GetVoiceNoteDurationInSeconds(string voiceNote)
         {
-           
-            Random rnd = new Random();
-            return rnd.Next(1, 600); // 10Sec max Duartion
+             Random rnd = new Random();
+            return rnd.Next(1, 600);  
         }
-
-
-
-
-
 
 
 

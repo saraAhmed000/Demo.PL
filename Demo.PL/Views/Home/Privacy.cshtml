@@ -14,7 +14,14 @@
                 <i class="fas fa-arrow-right" id="followIcon" href=""></i> 
             </a>
 
-            <a class="btn btn-primary px-4 mx-auto my-2">Post</a>
+          
+            <form id="followForm" action="@Url.Action("UploadContent", "Content")" method="post">
+                <input type="hidden" name="url" value="@Url.Action("AnotherView", "Home")" />
+                <button type="submit" class="btn btn-primary px-4 mx-auto my-2">
+                    Post
+                    <i class="fas fa-arrow-right" id="followIcon"></i> <!-- Font Awesome icon -->
+                </button>
+            </form>
 
 
         </div>
