@@ -28,9 +28,9 @@ namespace Demo.PL.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> ApproveContent(int id)
+        public async Task<ActionResult> ApproveContent(int contentId)
         {
-            var contentToApprove = await _unitOfWork.GenericRepositry.get(id);
+            var contentToApprove = await _unitOfWork.GenericRepositry.get(contentId);
             if (contentToApprove != null)
             {
                 contentToApprove.IsApproved = true;
@@ -38,14 +38,14 @@ namespace Demo.PL.Controllers
             }
 
             // Redirect to the review page or any other appropriate page
-            return RedirectToAction("Review");
+            return RedirectToAction("AdminHome" , "Admin");
         }
 
         [HttpPost]
-        public async Task<ActionResult> RejectContent(int id)
+        public async Task<ActionResult> RejectContent(int contentId)
         {
             // Retrieve the content by its ID and mark it as rejected or delete it
-            var contentToReject = await _unitOfWork.GenericRepositry.get(id);
+            var contentToReject = await _unitOfWork.GenericRepositry.get(contentId);
             if (contentToReject != null)
             {
                 _unitOfWork.GenericRepositry.Delete(contentToReject);
@@ -53,7 +53,7 @@ namespace Demo.PL.Controllers
             }
 
             // Redirect to the review page or any other appropriate page
-            return RedirectToAction("Review");
+            return RedirectToAction("AdminHome", "Admin");
         }
 
         private async Task<List<Content>> GetPendingContent()

@@ -3,7 +3,6 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Title</th>
             <th>Description</th>
             <th>Actions</th>
         </tr>
@@ -12,14 +11,13 @@
         @foreach (var content in Model)
         {
             <tr>
-                <td>@content.Title</td>
-                <td>@content.Description</td>
+                <td>@content.ContentText</td>
                 <td>
-                    <form asp-controller="Admin" asp-action="Accept" method="post">
+                    <form asp-controller="Content" asp-action="ApproveContent" method="post">
                         <input type="hidden" name="contentId" value="@content.Id" />
                         <button type="submit" class="btn btn-success">Accept</button>
                     </form>
-                    <form asp-controller="Admin" asp-action="Reject" method="post">
+                    <form asp-controller="Content" asp-action="RejectContent" method="post">
                         <input type="hidden" name="contentId" value="@content.Id" />
                         <button type="submit" class="btn btn-danger">Reject</button>
                     </form>

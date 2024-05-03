@@ -101,54 +101,54 @@ namespace Demo.PL
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllerRoute(
-            //        name: "default",
-            //        pattern: "{controller=Account}/{action=Login}/{id?}");
-            //});
-
-
             app.UseEndpoints(endpoints =>
             {
-                // Route for admin
-                endpoints.MapControllerRoute(
-                    name: "Admin",
-                    pattern: "{controller=Admin}/{action=AdminHome}/{id?}");
-
-                // Default route
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{id?}"); // Default route is the login page
-
-                // Add a middleware to redirect to the appropriate default route based on the user's role
-                endpoints.MapGet("/", async context =>
-                {
-                    var userManager = context.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
-                    var user = await userManager.GetUserAsync(context.User);
-
-                    // Check if the user is logged in
-                    if (user != null)
-                    {
-                        // Check if the user is an admin
-                        if (await userManager.IsInRoleAsync(user, "Admin"))
-                        {
-                            // Redirect to the admin default route
-                            context.Response.Redirect("/Admin/AdminHome");
-                        }
-                        else
-                        {
-                            // Redirect to the user default route (modify this route according to your actual user main page)
-                            context.Response.Redirect("/User/MainPage");
-                        }
-                    }
-                    else
-                    {
-                        // If not logged in, redirect to the default route (login page)
-                        context.Response.Redirect("/Account/Login");
-                    }
-                });
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
             });
+
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    // Route for admin
+            //    endpoints.MapControllerRoute(
+            //        name: "Admin",
+            //        pattern: "{controller=Admin}/{action=AdminHome}/{id?}");
+
+            //    // Default route
+            //    endpoints.MapControllerRoute(
+            //        name: "default",
+            //        pattern: "{controller=Account}/{action=Login}/{id?}"); // Default route is the login page
+
+            //    // Add a middleware to redirect to the appropriate default route based on the user's role
+            //    endpoints.MapGet("/", async context =>
+            //    {
+            //        var userManager = context.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
+            //        var user = await userManager.GetUserAsync(context.User);
+
+            //        // Check if the user is logged in
+            //        if (user != null)
+            //        {
+            //            // Check if the user is an admin
+            //            if (await userManager.IsInRoleAsync(user, "Admin"))
+            //            {
+            //                // Redirect to the admin default route
+            //                context.Response.Redirect("/Admin/AdminHome");
+            //            }
+            //            else
+            //            {
+            //                // Redirect to the user default route (modify this route according to your actual user main page)
+            //                context.Response.Redirect("/User/MainPage");
+            //            }
+            //        }
+            //        else
+            //        {
+            //            // If not logged in, redirect to the default route (login page)
+            //            context.Response.Redirect("/Account/Login");
+            //        }
+            //    });
+            //});
 
             #endregion
 
