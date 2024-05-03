@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,7 +22,7 @@ namespace Demo.PL
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -59,9 +60,11 @@ namespace Demo.PL
                 options.Password.RequireLowercase = true;
 
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MVCAppG0XDbContext>()
 
             .AddDefaultTokenProviders();
+
 
 
 
@@ -108,6 +111,35 @@ namespace Demo.PL
 
             #endregion
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManger = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var roles = new[] { "Admin" };
+                foreach (var role in roles)
+                {
+                    if (!await roleManger.RoleExistsAsync(role))
+                        await roleManger.CreateAsync(new IdentityRole(role));
+                }
+            }
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManger = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                string email = "admin@gmail.com";
+                string password = "Passwords@24";
+
+                if(await userManger.FindByEmailAsync(email) == null)
+                {
+                    var user = new ApplicationUser()
+                    {
+                        Email = email,
+                        UserName = email
+                    };
+                    await userManger.CreateAsync(user , password);
+
+                    await userManger.AddToRoleAsync(user, "Admin");
+                }
+            }
 
             app.Run();
 
