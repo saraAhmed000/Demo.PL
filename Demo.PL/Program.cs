@@ -21,23 +21,23 @@ namespace Demo.PL
 {
     public class Program
     {
-        public static async void Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
 
             #region ConfigureServices That allow dependency Injection
 
-           builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews();
 
-           builder.Services.AddDbContext<MVCAppG0XDbContext>(option =>
+            builder.Services.AddDbContext<MVCAppG0XDbContext>(option =>
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
             //builder.Services.AddScoped<IDepartmentRepositry, DepartmentRepositry>();
             //builder.Services.AddScoped<IEmployeeRepositry, EmployeeRepositry>();
-           // builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            // builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
             //builder.Services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
             //builder.Services.AddAutoMapper(M => M.AddProfile(new DepartmentProfile()));
@@ -63,19 +63,6 @@ namespace Demo.PL
 
             .AddDefaultTokenProviders();
 
-            var serviceProvider = builder.Services.BuildServiceProvider();
-
-            // Create admin role
-            using (var scope = serviceProvider.CreateScope())
-            {
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                var adminRoleExists = await roleManager.RoleExistsAsync("Admin");
-                if (!adminRoleExists)
-                {
-                   await  roleManager.CreateAsync(new IdentityRole("Admin"));
-                }
-            }
-
 
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -89,7 +76,7 @@ namespace Demo.PL
             #endregion
 
 
-            var app=builder.Build();
+            var app = builder.Build();
 
 
             #region Configuree httpRequest Pipelines
@@ -122,11 +109,9 @@ namespace Demo.PL
             #endregion
 
 
-            app.Run();  
+            app.Run();
 
         }
-
-
 
 
     }
